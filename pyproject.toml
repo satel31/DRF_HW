@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "drf-hw"
+version = "0.1.0"
+description = ""
+authors = ["satel31 <blokhnina.tatiana@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "drf_hw"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+django = "^4.2.3"
+python-dotenv = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
