@@ -44,7 +44,10 @@ THIRD_PARTY_APPS = [
     'rest_framework',
 ]
 
-USER_APPS = []
+USER_APPS = [
+    'apps.users',
+    'apps.courses',
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + USER_APPS
 
@@ -128,3 +131,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Registration of users
+AUTH_USER_MODEL = 'users.User'
+
+#Images
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
