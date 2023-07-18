@@ -1,9 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
 
 from apps.courses.models import Course
-from apps.courses.serializers.course import CourseSerializer
+from apps.courses.serializers.course import CourseSerializer, CourseListSerializer, CourseDetailSerializer
 
 
 class CourseViewSet(ModelViewSet):
-    serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    default_serializer = CourseSerializer
+    serializers = {
+        'list': CourseListSerializer,
+        'retrieve': CourseDetailSerializer,
+    }
+
+    def get_serializer_class(self):
+        return self.serializers.get(self.action, self.default_serializer)
