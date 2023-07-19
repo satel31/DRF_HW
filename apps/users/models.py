@@ -16,7 +16,10 @@ class User(AbstractUser):
     city = models.CharField(max_length=235, verbose_name='City', **NULLABLE)
     avatar = models.ImageField(upload_to='users/', verbose_name='Avatar', **NULLABLE)
 
-    role = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER)
+    role = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER, verbose_name='Role')
+
+    first_name = models.CharField(max_length=235, verbose_name='Name', **NULLABLE)
+    last_name = models.CharField(max_length=235, verbose_name='Last name', **NULLABLE)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
