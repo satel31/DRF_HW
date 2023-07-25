@@ -2,6 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from apps.courses.models import Course
+from apps.courses.pagination import CoursePagination
 from apps.courses.permissions import ModeratorPermission, IsOwnerPermission
 from apps.courses.serializers.course import CourseSerializer
 from apps.users.models import UserRoles
@@ -9,6 +10,7 @@ from apps.users.models import UserRoles
 
 class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
+    pagination_class = CoursePagination
     default_permission_class = [IsAuthenticated()]
     permissions = {
         'create': [IsAuthenticated(), ModeratorPermission()],
