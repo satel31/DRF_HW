@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from apps.courses.models import Course, Lesson, Subscription
+from apps.courses.models import Course, Lesson, Subscription, Payment
 from apps.users.models import User
 
 
@@ -149,3 +149,139 @@ class SubscriptionTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         self.assertFalse(Subscription.objects.all().exists())
+
+
+class CourseTestCase(APITestCase):
+    """BEFORE TEST CHANGE PERMISSIONS IN apps/courses/views/course"""
+
+    def setUp(self) -> None:
+        self.url = '/courses/courses/'
+        self.user = User.objects.create(email='test@example.com', password='test')
+        self.data = {
+            'course_name': 'test',
+            'owner': self.user
+        }
+
+        self.course = Course.objects.create(**self.data)
+        self.client.force_authenticate(user=self.user)
+
+    def test_1_create_course(self):
+        """Course creation testing """
+        data = {
+            'course_name': 'test',
+            'owner': self.user.pk
+        }
+        response = self.client.post(f'{self.url}', data=data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(Course.objects.all().count(), 2)
+
+    def test_2_list_course(self):
+        """Course list testing """
+        response = self.client.get(f'{self.url}')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json()['results'],
+            [{'course_name': 'test', 'preview': None, 'description': None, 'lesson_count': 0, 'lesson': [],
+              'subscription': False}]
+        )
+
+    def test_3_retrieve_course(self):
+        """Course retrieve testing """
+
+        response = self.client.get(f'{self.url}{self.course.pk}/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(
+            response.json(),
+            {'course_name': 'test', 'preview': None, 'description': None, 'lesson_count': 0, 'lesson': [],
+             'subscription': False}
+        )
+
+    def test_4_update_course(self):
+        """Course update testing """
+        data = {
+            'course_name': 'test2',
+            'owner': self.user.pk
+        }
+
+        response = self.client.put(f'{self.url}{self.course.pk}/', data=data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json(),
+            {'course_name': 'test2', 'preview': None, 'description': None, 'lesson_count': 0, 'lesson': [],
+             'subscription': False}
+        )
+
+    def test_5_update_partial_course(self):
+        """Course partial update testing """
+        data = {
+            'course_name': 'test2'
+        }
+        response = self.client.patch(f'{self.url}{self.course.pk}/', data=data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(
+            response.json(),
+            {'course_name': 'test2', 'preview': None, 'description': None, 'lesson_count': 0, 'lesson': [],
+             'subscription': False}
+        )
+
+    def test_6_destroy_course(self):
+        """Course destroying testing """
+        response = self.client.delete(f'{self.url}{self.course.pk}/')
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertFalse(Course.objects.all().exists())
+
+
+class PaymentTestCase(APITestCase):
+    """BEFORE TEST CHANGE PERMISSIONS IN apps/courses/views/payment"""
+
+    def setUp(self) -> None:
+        self.url = '/courses/'
+        self.user = User.objects.create(email='test@example.com', password='test')
+        self.data = {
+            'user': self.user,
+            'sum': 10_000,
+            'method': 'cash'
+        }
+
+        self.payment = Payment.objects.create(**self.data)
+        self.client.force_authenticate(user=self.user)
+
+    def test_1_list_payment(self):
+        """Payment list testing """
+        response = self.client.get(f'{self.url}payments/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json(),
+            [{'id': self.payment.pk, 'course': None, 'lesson': None,
+              'payment_date': f'{str(self.payment.payment_date)[:10]}T{str(self.payment.payment_date)[11:-6]}Z',
+              'sum': 10000,
+              'method': 'cash', 'user': 14}]
+        )
+
+    def test_2_retrieve_payment(self):
+        """Payment retrieve testing """
+
+        response = self.client.get(f'{self.url}payment/{self.payment.pk}/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(
+            response.json(),
+            {'id': self.payment.pk, 'course': None, 'lesson': None,
+             'payment_date': f'{str(self.payment.payment_date)[:10]}T{str(self.payment.payment_date)[11:-6]}Z',
+             'sum': 10000,
+             'method': 'cash', 'user': 15}
+        )
+
+        def tearDown(self):
+            User.objects.all().delete()
