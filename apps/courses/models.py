@@ -45,3 +45,7 @@ class Payment(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.DO_NOTHING, verbose_name='Paid Lesson', **NULLABLE)
     sum = models.IntegerField(default=0, verbose_name='Sum of Payment')
     method = models.CharField(max_length=255, choices=METHOD_CHOICES, verbose_name='Payment Method')
+
+class Subscription(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Course')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User', **NULLABLE)
