@@ -8,6 +8,8 @@ from apps.users.serializers import UserSerializer, StrangerUserSerializer
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
+    # In case of test
+    #permission_classes = [AllowAny]
     default_permission_class = [IsAuthenticated()]
     permissions = {
         'create': [AllowAny()],
