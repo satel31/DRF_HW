@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from apps.courses.models import Lesson
+from apps.courses.pagination import LessonPagination
 from apps.courses.permissions import ModeratorPermission, IsOwnerPermission
 from apps.courses.serializers.lesson import LessonSerializer
 from apps.users.models import UserRoles
@@ -20,6 +21,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated or ModeratorPermission]
+    pagination_class = LessonPagination
 
     def get_queryset(self):
         if self.request.user.role == UserRoles.MODERATOR:
