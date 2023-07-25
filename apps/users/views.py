@@ -8,16 +8,18 @@ from apps.users.serializers import UserSerializer, StrangerUserSerializer
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
-    default_permission_class = [IsAuthenticated()]
-    permissions = {
-        'create': [AllowAny()],
-        'update': [IsAuthenticated(), IsOwnerPermission()],
-        'partial_update': [IsAuthenticated(), IsOwnerPermission()],
-        'destroy': [IsAuthenticated(), IsOwnerPermission()],
-    }
+    # In case of test
+    permission_classes = [AllowAny]
+    #default_permission_class = [IsAuthenticated()]
+    #permissions = {
+        #'create': [AllowAny()],
+        #'update': [IsAuthenticated(), IsOwnerPermission()],
+        #'partial_update': [IsAuthenticated(), IsOwnerPermission()],
+        #'destroy': [IsAuthenticated(), IsOwnerPermission()],
+    #}
 
-    def get_permissions(self):
-        return self.permissions.get(self.action, self.default_permission_class)
+    #def get_permissions(self):
+        #return self.permissions.get(self.action, self.default_permission_class)
 
     def get_serializer_class(self):
         try:
