@@ -12,9 +12,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ModeratorPermission]
 
     def perform_create(self, serializer):
-        new_moto = serializer.save()
-        new_moto.owner = self.request.user
-        new_moto.save()
+        new_lesson = serializer.save()
+        new_lesson.owner = self.request.user
+        new_lesson.save()
 
 
 class LessonListAPIView(generics.ListAPIView):

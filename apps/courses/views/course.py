@@ -23,9 +23,9 @@ class CourseViewSet(ModelViewSet):
         return self.permissions.get(self.action, self.default_permission_class)
 
     def perform_create(self, serializer):
-        new_moto = serializer.save()
-        new_moto.owner = self.request.user
-        new_moto.save()
+        new_course = serializer.save()
+        new_course.owner = self.request.user
+        new_course.save()
 
     def get_queryset(self):
         if self.request.user.role == UserRoles.MODERATOR:
