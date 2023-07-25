@@ -13,14 +13,14 @@ class PaymentListAPIView(generics.ListAPIView):
     filter_backends = [OrderingFilter, DjangoFilterBackend]
     ordering_fields = ['payment_date']
     filterset_fields = ('course', 'lesson', 'method',)
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
 
 
 class PaymentDetailAPIView(generics.RetrieveAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]

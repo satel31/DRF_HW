@@ -10,9 +10,9 @@ from apps.users.models import UserRoles
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    #permission_classes = [IsAuthenticated, ModeratorPermission]
+    permission_classes = [IsAuthenticated, ModeratorPermission]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         new_lesson = serializer.save()
@@ -22,9 +22,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
-    #permission_classes = [IsAuthenticated or ModeratorPermission]
+    permission_classes = [IsAuthenticated or ModeratorPermission]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
     pagination_class = LessonPagination
 
     def get_queryset(self):
@@ -35,9 +35,9 @@ class LessonListAPIView(generics.ListAPIView):
 
 class LessonDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
-    #permission_classes = [IsAuthenticated | ModeratorPermission]
+    permission_classes = [IsAuthenticated | ModeratorPermission]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
 
     def get_queryset(self):
         if self.request.user.role == UserRoles.MODERATOR:
@@ -48,9 +48,9 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
-    #permission_classes = [IsAuthenticated, ModeratorPermission | IsOwnerPermission]
+    permission_classes = [IsAuthenticated, ModeratorPermission | IsOwnerPermission]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
 
     def get_queryset(self):
         if self.request.user.role == UserRoles.MODERATOR:
@@ -59,9 +59,9 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
-    #permission_classes = [IsAuthenticated, ModeratorPermission, IsOwnerPermission]
+    permission_classes = [IsAuthenticated, ModeratorPermission, IsOwnerPermission]
     # In case of test
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
 
     def get_queryset(self):
         if self.request.user.role == UserRoles.MODERATOR:

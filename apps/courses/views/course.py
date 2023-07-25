@@ -12,19 +12,19 @@ class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
     pagination_class = CoursePagination
     # In case of test
-    permission_classes = [AllowAny]
-    #default_permission_class = [IsAuthenticated()]
-    #permissions = {
-        #'create': [IsAuthenticated(), ModeratorPermission()],
-        #'list': [IsAuthenticated() or ModeratorPermission()],
-        #'retrieve': [IsAuthenticated() or ModeratorPermission()],
-        #'update': [IsAuthenticated(), IsOwnerPermission() or ModeratorPermission()],
-        #'partial_update': [IsAuthenticated(), IsOwnerPermission() or ModeratorPermission()],
-        #'destroy': [IsAuthenticated(), ModeratorPermission(), IsOwnerPermission()],
-    #}
+    #permission_classes = [AllowAny]
+    default_permission_class = [IsAuthenticated()]
+    permissions = {
+        'create': [IsAuthenticated(), ModeratorPermission()],
+        'list': [IsAuthenticated() or ModeratorPermission()],
+        'retrieve': [IsAuthenticated() or ModeratorPermission()],
+        'update': [IsAuthenticated(), IsOwnerPermission() or ModeratorPermission()],
+        'partial_update': [IsAuthenticated(), IsOwnerPermission() or ModeratorPermission()],
+        'destroy': [IsAuthenticated(), ModeratorPermission(), IsOwnerPermission()],
+    }
 
-    #def get_permissions(self):
-        #return self.permissions.get(self.action, self.default_permission_class)
+    def get_permissions(self):
+        return self.permissions.get(self.action, self.default_permission_class)
 
 
     def perform_create(self, serializer):
