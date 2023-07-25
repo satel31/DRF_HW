@@ -4,6 +4,7 @@ from apps.courses.views.lesson import *
 
 from apps.courses.views.course import CourseViewSet
 from apps.courses.views.payment import *
+from apps.courses.views.subscription import *
 
 app_name = 'courses'
 
@@ -18,6 +19,11 @@ urlpatterns = [
     # payment
     path('payments/', PaymentListAPIView.as_view(), name='payments'),
     path('payment/<int:pk>/', PaymentDetailAPIView.as_view(), name='payment'),
+
+    # subscription
+    path('add_subscription/', SubscriptionCreateAPIView.as_view(), name='add_subscription'),
+    path('subscription/delete/<int:pk>/', SubscriptionDeleteAPIView.as_view(), name='subscription_delete'),
+
 ]
 
 router = SimpleRouter()
