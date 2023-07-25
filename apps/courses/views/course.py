@@ -11,6 +11,8 @@ from apps.users.models import UserRoles
 class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
     pagination_class = CoursePagination
+    # In case of test
+    permission_classes = [AllowAny]
     #default_permission_class = [IsAuthenticated()]
     #permissions = {
         #'create': [IsAuthenticated(), ModeratorPermission()],
@@ -23,8 +25,8 @@ class CourseViewSet(ModelViewSet):
 
     #def get_permissions(self):
         #return self.permissions.get(self.action, self.default_permission_class)
-    # In case of test
-    permission_classes = [AllowAny]
+
+
     def perform_create(self, serializer):
         new_course = serializer.save()
         new_course.owner = self.request.user
