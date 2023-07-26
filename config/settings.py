@@ -158,3 +158,6 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+# Settings for  stripe payment service
+STRIPE_API_KEY = os.getenv('stripe_api_key')
