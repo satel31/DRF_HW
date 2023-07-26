@@ -9,6 +9,10 @@ from apps.users.models import UserRoles
 
 
 class CourseViewSet(ModelViewSet):
+    """Viewset for Course model.
+       To create you need to enter course_name.
+       Has pagination for GET method and different permissions for different methods.
+       In queryset has only owner's objects"""
     serializer_class = CourseSerializer
     pagination_class = CoursePagination
     # In case of test
