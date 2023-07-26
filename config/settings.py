@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
+    'drf_yasg',
 ]
 
 USER_APPS = [
@@ -146,4 +147,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }
