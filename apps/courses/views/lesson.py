@@ -9,6 +9,9 @@ from apps.users.models import UserRoles
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
+    """View to create a lesson.
+       To create you need to enter lesson_name and course_name (from existed courses).
+       In case of the tests don't forget to change permissions."""
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ModeratorPermission]
     # In case of test
@@ -21,6 +24,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
 
 
 class LessonListAPIView(generics.ListAPIView):
+    """View to get a list of lessons (returns only your own lessons).
+       Has pagination.
+       In case of the tests don't forget to change permissions."""
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated or ModeratorPermission]
     # In case of test
@@ -34,6 +40,8 @@ class LessonListAPIView(generics.ListAPIView):
 
 
 class LessonDetailAPIView(generics.RetrieveAPIView):
+    """View to get a particular lesson by its id (returns only your own lessons).
+       In case of the tests don't forget to change permissions."""
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated | ModeratorPermission]
     # In case of test
@@ -47,6 +55,8 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
+    """View to update a lesson by its id (you can update only your own lessons).
+       In case of the tests don't forget to change permissions."""
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ModeratorPermission | IsOwnerPermission]
     # In case of test
@@ -59,6 +69,8 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
+    """View to delete a lesson by its id (you can delete only your own lessons).
+       In case of the tests don't forget to change permissions."""
     permission_classes = [IsAuthenticated, ModeratorPermission, IsOwnerPermission]
     # In case of test
     #permission_classes = [AllowAny]

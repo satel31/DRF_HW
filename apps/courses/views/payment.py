@@ -8,6 +8,9 @@ from apps.courses.serializers.payment import PaymentSerializer
 
 
 class PaymentListAPIView(generics.ListAPIView):
+    """View to get a list of payments.
+       Has filter (by course, lesson and method of payment) and ordering (by payment_date).
+       In case of the tests don't forget to change permissions."""
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
     filter_backends = [OrderingFilter, DjangoFilterBackend]
@@ -19,6 +22,8 @@ class PaymentListAPIView(generics.ListAPIView):
 
 
 class PaymentDetailAPIView(generics.RetrieveAPIView):
+    """View to get a particular of payment.
+       In case of the tests don't forget to change permissions."""
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
     permission_classes = [IsAuthenticated]
