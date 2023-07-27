@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.courses.models import Subscription, Course
-from apps.courses.services import get_pay_link
+from apps.courses.services import get_pay_link, create_payment_object
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -9,7 +9,9 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_payment_link(self, instance):
         obj = Course.objects.get(pk=instance.course.pk)
-        return get_pay_link(obj)
+        payment_data = get_pay_link(obj)
+        create_payment_object(instance, payment_data)
+        return payment_data['url']
 
     class Meta:
         model = Subscription
