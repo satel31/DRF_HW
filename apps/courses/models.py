@@ -10,6 +10,7 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='courses/', verbose_name='Course preview', **NULLABLE)
     description = models.TextField(verbose_name='Course description', **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, **NULLABLE)
+    price = models.IntegerField(default=0, verbose_name='Course subscription price')
 
     def __str__(self):
         return f'{self.course_name}'
@@ -45,6 +46,8 @@ class Payment(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.DO_NOTHING, verbose_name='Paid Lesson', **NULLABLE)
     sum = models.IntegerField(default=0, verbose_name='Sum of Payment')
     method = models.CharField(max_length=255, choices=METHOD_CHOICES, verbose_name='Payment Method')
+    payment_id = models.CharField(max_length=255, verbose_name='Payment id', **NULLABLE)
+    payment_status = models.CharField(max_length=255, verbose_name='Payment Status', **NULLABLE)
 
 class Subscription(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Course')

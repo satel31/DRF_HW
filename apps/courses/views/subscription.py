@@ -7,6 +7,9 @@ from apps.users.models import UserRoles
 
 
 class SubscriptionCreateAPIView(generics.CreateAPIView):
+    """View to create a subscription.
+       To create you need to enter course pk (from existed courses) and method (cash or card).
+       In case of the tests don't forget to change permissions."""
     serializer_class = SubscriptionSerializer
     permission_classes = [IsAuthenticated]
     # In case of test
@@ -18,6 +21,8 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
         new_sub.save()
 
 class SubscriptionDeleteAPIView(generics.DestroyAPIView):
+    """View to delete a subscription by its id (you can delete only your own subscription).
+       In case of the tests don't forget to change permissions."""
     permission_classes = [IsAuthenticated]
     # In case of test
     #permission_classes = [AllowAny]

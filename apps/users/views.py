@@ -7,6 +7,9 @@ from apps.users.serializers import UserSerializer, StrangerUserSerializer
 
 
 class UserViewSet(ModelViewSet):
+    """Viewset for User model.
+       To create you need to enter email and password.
+       Has different permissions for different methods and different serializers to view your data."""
     queryset = User.objects.all()
     # In case of test
     #permission_classes = [AllowAny]
