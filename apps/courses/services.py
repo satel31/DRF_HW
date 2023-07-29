@@ -85,4 +85,4 @@ def check_payment_status():
 
 def run_schedule():
     """Run a schedule"""
-    schedule.every(12).hours.do(check_payment_status)
+    schedule.every(1).hours.do(check_payment_status)
