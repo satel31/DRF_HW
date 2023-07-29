@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'django_celery_beat',
 ]
 
 USER_APPS = [
@@ -159,5 +160,8 @@ SWAGGER_SETTINGS = {
     }
 }
 
-# Settings for  stripe payment service
+# Settings for stripe payment service
 STRIPE_API_KEY = os.getenv('stripe_api_key')
+
+# Settings for celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
