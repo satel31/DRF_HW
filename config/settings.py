@@ -165,3 +165,12 @@ STRIPE_API_KEY = os.getenv('stripe_api_key')
 
 # Settings for celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# Settings for email
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = os.getenv('email')
+EMAIL_PORT = 465
+#In case of error copy password from .env. It helps.
+EMAIL_HOST_PASSWORD = os.getenv('password')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
