@@ -1,5 +1,6 @@
 import requests
 import schedule
+
 from django.conf import settings
 
 from apps.courses.models import Payment
@@ -75,6 +76,7 @@ def create_payment_object(obj, data):
 
     Payment.objects.create(**pay_data)
 
+
 def check_payment_status():
     payments = Payment.objects.all()
     for payment in payments:
@@ -82,6 +84,7 @@ def check_payment_status():
         payment.payment_status = status
         payment.save()
         print(status)
+
 
 def run_schedule():
     """Run a schedule"""
