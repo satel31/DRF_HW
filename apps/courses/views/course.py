@@ -1,12 +1,13 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from apps.courses.models import Course, Subscription
+from apps.courses.models import Course, Subscription, Lesson
 from apps.courses.pagination import CoursePagination
 from apps.courses.permissions import ModeratorPermission, IsOwnerPermission
 from apps.courses.serializers.course import CourseSerializer
 from apps.courses.tasks import send_update_email
 from apps.users.models import UserRoles, User
+import datetime
 
 
 class CourseViewSet(ModelViewSet):
@@ -39,13 +40,8 @@ class CourseViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         upd_course = serializer.save()
-        # Get all subscriptions by the course pk
-        subscriptions = Subscription.objects.filter(course=upd_course.pk)
-        # Get all followers by user pk in subscriptions
-        follower_list = User.objects.filter(pk__in=[subscription.user.pk for subscription in subscriptions])
-        # Get all email by user pk in follower list
-        email_list = [follower.email for follower in follower_list]
-        send_update_email.delay(email_list, upd_course.course_name)
+        send_update_email.delay(upd_course.pk)
+
 
     def get_queryset(self):
         if self.request.user.role == UserRoles.MODERATOR:
