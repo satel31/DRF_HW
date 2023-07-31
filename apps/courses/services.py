@@ -1,18 +1,10 @@
 import requests
 import schedule
+
 from django.conf import settings
-from django.core.mail import send_mail
 
 from apps.courses.models import Payment
 
-def send_update_email(email_list):
-    """Sends an email with update of the course"""
-    send_mail(
-        'Course update!',
-        f'Congratulations! You article {title} has got 100 views!',
-        settings.EMAIL_HOST_USER,
-        ['test3112django@yandex.ru']
-    )
 
 def create_product(product):
     url = 'https://api.stripe.com/v1/products'
@@ -84,6 +76,7 @@ def create_payment_object(obj, data):
 
     Payment.objects.create(**pay_data)
 
+
 def check_payment_status():
     payments = Payment.objects.all()
     for payment in payments:
@@ -91,6 +84,7 @@ def check_payment_status():
         payment.payment_status = status
         payment.save()
         print(status)
+
 
 def run_schedule():
     """Run a schedule"""
