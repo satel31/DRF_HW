@@ -11,6 +11,7 @@ class Course(models.Model):
     description = models.TextField(verbose_name='Course description', **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, **NULLABLE)
     price = models.IntegerField(default=0, verbose_name='Course subscription price')
+    updated_at = models.DateTimeField(verbose_name='Time of update of materials of the course', **NULLABLE)
 
     def __str__(self):
         return f'{self.course_name}'
