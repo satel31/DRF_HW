@@ -32,3 +32,5 @@ class UserViewSet(ModelViewSet):
         # игнорирование ошибки при list
         except AssertionError:
             return StrangerUserSerializer
+        except AttributeError:
+            return UserSerializer

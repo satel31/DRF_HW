@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -166,11 +167,18 @@ STRIPE_API_KEY = os.getenv('stripe_api_key')
 # Settings for celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
+CELERY_BEAT_SCHEDULE = {
+    'task_name': {
+        'task': 'apps.users.tasks.check_last_login',
+        'schedule': timedelta(days=1)
+    }
+}
+
 # Settings for email
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_HOST_USER = os.getenv('email')
 EMAIL_PORT = 465
-#In case of error copy password from .env. It helps.
+# In case of error copy password from .env. It helps.
 EMAIL_HOST_PASSWORD = os.getenv('password')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
