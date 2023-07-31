@@ -1,11 +1,15 @@
+import datetime
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from apps.courses.models import Lesson
+from apps.courses.models import Lesson, Course, Subscription
 from apps.courses.pagination import LessonPagination
 from apps.courses.permissions import ModeratorPermission, IsOwnerPermission
 from apps.courses.serializers.lesson import LessonSerializer
-from apps.users.models import UserRoles
+from apps.users.models import UserRoles, User
+from apps.courses.tasks import send_update_email
+import datetime
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -67,6 +71,10 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
             return Lesson.objects.all()
         return Lesson.objects.filter(owner=self.request.user)
 
+    def perform_update(self, serializer):
+        upd_lesson = serializer.save()
+        course = Course.objects.filter(pk=upd_lesson.course_id).first()
+        send_update_email.delay(course.pk)
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
     """View to delete a lesson by its id (you can delete only your own lessons).
