@@ -21,8 +21,7 @@ def send_update_email(course_pk):
     email_list = [follower.email for follower in follower_list]
 
     current_time = timezone.now() - datetime.timedelta(minutes=1)
-
-    if course.updated_at < current_time:
+    if course.updated_at - current_time > datetime.timedelta(hours=4):
         try:
             send_mail(
                 'Course update!',
