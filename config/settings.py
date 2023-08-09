@@ -178,7 +178,6 @@ CELERY_BEAT_SCHEDULE = {
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_HOST_USER = os.getenv('email')
 EMAIL_PORT = 465
-# In case of error copy password from .env. It helps.
 EMAIL_HOST_PASSWORD = os.getenv('password')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
