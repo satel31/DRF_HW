@@ -29,7 +29,7 @@ class UserViewSet(ModelViewSet):
             if self.request.user.email == self.get_object().email:
                 return UserSerializer
             return StrangerUserSerializer
-        # игнорирование ошибки при list
+        # To ignore an error in list method
         except AssertionError:
             return StrangerUserSerializer
         except AttributeError:
