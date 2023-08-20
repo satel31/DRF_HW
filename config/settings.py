@@ -131,6 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -165,7 +166,7 @@ SWAGGER_SETTINGS = {
 STRIPE_API_KEY = os.getenv('stripe_api_key')
 
 # Settings for celery
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://localhost:8001/0'
 
 CELERY_BEAT_SCHEDULE = {
     'task_name': {
