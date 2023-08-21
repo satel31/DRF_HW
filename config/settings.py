@@ -92,9 +92,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('name'),
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': os.getenv('password_db')
+        'PASSWORD': 'mysecretpassword',
+        'HOST': 'db'
     }
 }
 
@@ -166,7 +167,7 @@ SWAGGER_SETTINGS = {
 STRIPE_API_KEY = os.getenv('stripe_api_key')
 
 # Settings for celery
-CELERY_BROKER_URL = 'redis://localhost:8001/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
     'task_name': {
