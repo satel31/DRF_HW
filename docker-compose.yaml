@@ -3,57 +3,31 @@ version: '3'
 services:
   db:
     image: postgres:14-alpine3.17
-    container_name: 'db_lms'
-    env_file:
-      - .env
+    container_name: db_lms
     environment:
       POSTGRES_PASSWORD: mysecretpassword
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_DB: drf_hw
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - "5432:5432"
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -d $${name} -U postgres']
+      test: [ 'CMD-SHELL', 'pg_isready -d postgres -U postgres' ]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7.0.2-alpine
-    container_name: 'redis_lms'
-    command: redis-server --save 20 1 --loglevel warning
-    volumes:
-      - redis_data:/data
-    ports:
-      - '6380:6379'
-      - '9999:8001'
-
-  celery:
-    build: .
-    container_name: 'celery_lms'
-    command: >
-      bash -c "celery -A config worker --beat --loglevel=info"
-    volumes:
-      - .:/docker_code
-      - ./.env.docker:/code/.env
-    links:
-      - redis
-    depends_on:
-      - app
-      - redis
-
   app:
     build: .
-    container_name: 'app_lms'
+    container_name: app_lms
     env_file:
       - .env
     command: >
       bash -c "python manage.py collectstatic --noinput
       && python manage.py makemigrations
       && python manage.py migrate
-      && python manage.py runserver 0.0.0.0:"
+      && python manage.py runserver 0.0.0.0:8000"
+
     volumes:
       - static:/docker_code/static/
       - media:/docker_code/media/
@@ -65,6 +39,30 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+
+  redis:
+    image: redis:7.0.2-alpine
+    container_name: redis_lms
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    ports:
+      - '6380:6379'
+      - '9999:8001'
+
+  celery:
+    build: .
+    container_name: celery_lms
+    command: >
+      bash -c "celery -A config worker --beat --loglevel=info"
+    volumes:
+      - .:/docker_code
+      - ./.env.docker:/code/.env
+    links:
+      - redis
+    depends_on:
+      - app
+      - redis
 
 volumes:
   postgres_data:
